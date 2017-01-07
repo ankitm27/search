@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="personCtrl">
+search by university: <input type="text" ng-model="fullName.firstName"><br>
+<br>
+<button type=submit  ng-click="name(fullName)">Submit</button>
+<div ng-if ="leng <= 2">
+<h1>please serach </h1>
+</div>
+
+<div ng-if ="leng > 2">
+<h1>{{x}} </h1>
+</div>
+
+
+<br>
+search by course: <input type="text" ng-model="course.CourseName"><br>
+<br>
+<button type=submit  ng-click="name1(course)">Submit</button>
+<div ng-if ="len <= 2">
+<h1>please serach </h1> 
+</div>
+
+<div ng-if ="len > 2">
+<h1>{{y}} </h1>
+</div>
+
+</div>
+
+<script>
+
+var app = angular.module('myApp', []);
+app.controller('personCtrl',function($scope,$http){
+        $scope.name = function(fullName){
+        console.log(fullName);
+        $http.post('/course',fullName).success(function(response){
+          if(response.error){
+            $scope.x = "please use relevent words";
+          }else{
+           $scope.x = JSON.stringify(response);
+           $scope.leng = $scope.x.length           
+          }
+        }).error(function(error){
+          console.log(error);
+        });
+      }
+
+    
+ $scope.name1 = function(course){
+        console.log(course);
+        $http.post('/university',course).success(function(response){
+          if(response.error){
+            $scope.y = "please use relevent words";
+          }else{
+           $scope.y = JSON.stringify(response);
+           $scope.len = $scope.y.length
+                    
+ }
+        }).error(function(error){
+          console.log(error);
+        });
+      }
+
+
+
+});
+</script>
+
+</body>
+</html>
+
+ 
