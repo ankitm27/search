@@ -12,8 +12,9 @@ module.exports = function(app) {
 //request at search by university name ex-kiet
 app.post('/course', function(req, res){
         // Uses Mongoose schema to run the search ex-"name":data due to search for specific college 
-        var data = req.body.firstName
-        user.find({"name":data} ,function(err, users){
+        var data = req.body.firstName;
+        data = "^"+data
+        user.find({name:{$regex:data,$options:"$i"}} ,function(err, users){
         if(err){
 	console.log('err');
         res.send(err);
@@ -26,7 +27,8 @@ app.post('/course', function(req, res){
 app.post('/university', function(req, res){
         // Uses Mongoose schema to run the search ex-"course.name":data due to search specific course
         var data = req.body.courseName;
-        user.find({"courses.name":data},{"name":1,"type":1,"rank":1,"year_of_establishment":1,"courses.$":1} ,function(err, users){
+        data = "^"+data;
+        user.find({"courses.name":{$regex:data,$options:"$i"}},{"name":1,"type":1,"rank":1,"year_of_establishment":1,"courses.$":1} ,function(err, users){
         if(err){
         console.log('err');
         res.send(err);
